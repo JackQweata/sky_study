@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "sky-study"
+version = "0.1.0"
+description = ""
+authors = ["JackQweata <dahil3@yandex.ru>"]
+readme = "README.md"
+packages = [{include = "sky_study"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2.5"
+djangorestframework = "^3.14.0"
+python-dotenv = "^1.0.0"
+pillow = "^10.0.1"
+psycopg2 = "^2.9.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

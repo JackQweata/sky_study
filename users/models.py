@@ -3,6 +3,11 @@ from django.db import models
 
 BLANCNULL = {'blank': True, 'null': True}
 
+PAYMENT_METHOD = (
+    ('cash', 'наличные'),
+    ('transfer', 'перевод')
+)
+
 
 class User(AbstractUser):
     username = None
@@ -15,14 +20,26 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
 
-class Course(models.Model):
-    title = models.CharField(max_length=100, verbose_name='Название курса')
-    img = models.ImageField(**BLANCNULL, upload_to='courses/', verbose_name='Картинка')
-    descriptions = models.TextField(**BLANCNULL, verbose_name='Описание')
-
-
 class Lessons(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название урока')
     img = models.ImageField(**BLANCNULL, upload_to='lessons/', verbose_name='Картинка')
     link_video = models.CharField(**BLANCNULL, max_length=255, verbose_name='Ссылка на видео')
     descriptions = models.TextField('Описание')
+
+
+class Course(models.Model):
+    lessons = models.ManyToManyField(Lessons, related_name='lessons')
+
+    title = models.CharField(max_length=100, verbose_name='Название курса')
+    img = models.ImageField(**BLANCNULL, upload_to='courses/', verbose_name='Картинка')
+    descriptions = models.TextField(**BLANCNULL, verbose_name='Описание')
+
+
+class Payments(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, **BLANCNULL, related_name='course')
+    lesson = models.ForeignKey(Lessons, on_delete=models.CASCADE, **BLANCNULL, related_name='lesson')
+
+    date = models.DateTimeField(auto_now_add=True)
+    amount = models.IntegerField()
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD)

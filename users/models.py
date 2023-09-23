@@ -25,6 +25,7 @@ class Lessons(models.Model):
     img = models.ImageField(**BLANCNULL, upload_to='lessons/', verbose_name='Картинка')
     link_video = models.CharField(**BLANCNULL, max_length=255, verbose_name='Ссылка на видео')
     descriptions = models.TextField('Описание')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Course(models.Model):
@@ -33,6 +34,7 @@ class Course(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название курса')
     img = models.ImageField(**BLANCNULL, upload_to='courses/', verbose_name='Картинка')
     descriptions = models.TextField(**BLANCNULL, verbose_name='Описание')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Payments(models.Model):

@@ -29,7 +29,7 @@ class Lessons(models.Model):
 
 
 class Course(models.Model):
-    lessons = models.ManyToManyField(Lessons, related_name='lessons')
+    lessons = models.ManyToManyField(Lessons, related_name='lessons', **BLANCNULL)
 
     title = models.CharField(max_length=100, verbose_name='Название курса')
     img = models.ImageField(**BLANCNULL, upload_to='courses/', verbose_name='Картинка')
@@ -45,3 +45,9 @@ class Payments(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     amount = models.IntegerField()
     payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD)
+
+
+class Subscript(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    is_sub = models.BooleanField(**BLANCNULL)

@@ -1,5 +1,4 @@
 from rest_framework.response import Response
-
 from users.models import Course
 
 
@@ -13,7 +12,7 @@ class ManagerRestrictionsMixin:
 class OwnerProductsMixin:
     def get_queryset(self):
         if self.request.user.groups.filter(name='manager').exists():
-            queryset = Course.objects.all()
+            queryset = Course.objects.all().order_by('title')
         else:
-            queryset = Course.objects.filter(owner=self.request.user)
+            queryset = Course.objects.filter(owner=self.request.user).order_by('title')
         return queryset

@@ -22,6 +22,7 @@ class User(AbstractUser):
 
 class Lessons(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название урока')
+    price = models.IntegerField(default=1000, verbose_name='Цена')
     img = models.ImageField(**BLANCNULL, upload_to='lessons/', verbose_name='Картинка')
     link_video = models.CharField(**BLANCNULL, max_length=255, verbose_name='Ссылка на видео')
     descriptions = models.TextField('Описание')
@@ -29,9 +30,10 @@ class Lessons(models.Model):
 
 
 class Course(models.Model):
-    lessons = models.ManyToManyField(Lessons, related_name='lessons', **BLANCNULL)
+    lessons = models.ManyToManyField(Lessons, related_name='lessons')
 
     title = models.CharField(max_length=100, verbose_name='Название курса')
+    price = models.IntegerField(default=1000, verbose_name='Цена')
     img = models.ImageField(**BLANCNULL, upload_to='courses/', verbose_name='Картинка')
     descriptions = models.TextField(**BLANCNULL, verbose_name='Описание')
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -42,6 +44,8 @@ class Payments(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, **BLANCNULL, related_name='course')
     lesson = models.ForeignKey(Lessons, on_delete=models.CASCADE, **BLANCNULL, related_name='lesson')
 
+    payment_id = models.CharField(max_length=255, verbose_name='id сервиса', default='')
+    is_confirmation = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)
     amount = models.IntegerField()
     payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD)

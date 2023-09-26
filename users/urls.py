@@ -23,5 +23,7 @@ urlpatterns = [
     path('payment/', PaymentsListAPIView.as_view(), name='payment-list'),
 
     path('subscript/create/', SubscriptCreateAPIView.as_view(), name='sub-create'),
-    path('subscript/delete/<int:pk>/', SubscriptDestroyAPIView.as_view(), name='sub-delete')
+    path('subscript/delete/<int:pk>/', SubscriptDestroyAPIView.as_view(), name='sub-delete'),
+
+    path('payment_intents/create/', PayCreateAPIView.as_view(), name='pay-create'),
 ] + router.urls

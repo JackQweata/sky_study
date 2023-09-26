@@ -14,5 +14,5 @@ class OwnerProductsMixin:
         if self.request.user.groups.filter(name='manager').exists():
             queryset = Course.objects.all().order_by('title')
         else:
-            queryset = Course.objects.filter(owner=self.request.user).order_by('title')
+            queryset = Course.objects.filter(owner=self.request.user.id).order_by('title')
         return queryset

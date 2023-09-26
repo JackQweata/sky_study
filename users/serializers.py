@@ -36,7 +36,13 @@ class CourseSerializer(serializers.ModelSerializer):
 class PaymentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payments
-        fields = '__all__'
+        fields = ['course', 'lesson', 'date', 'amount']
+        extra_kwargs = {
+            'course': {'required': False},
+            'lesson': {'required': False},
+            'date': {'required': False},
+            'amount': {'required': False},
+        }
 
 
 class SubscriptSerializer(serializers.ModelSerializer):

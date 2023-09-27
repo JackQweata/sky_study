@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from users.models import Course, Lessons, Payments, Subscript
+from users.tasks import updating_course_materials
 from users.validators import LessonCustomValidator
 
 
 class LessonsSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Lessons
         fields = '__all__'
@@ -31,6 +31,21 @@ class CourseSerializer(serializers.ModelSerializer):
 
     def get_count_lesson(self, obj):
         return obj.lessons.count()
+
+    def update(self, instance, validated_data):
+        if validated_data.get('title'):
+            instance.title = validated_data['title']
+        if validated_data.get('descriptions'):
+            instance.descriptions = validated_data['descriptions']
+        if validated_data.get('lessons'):
+            instance.lessons.add(validated_data['lessons'])
+
+        subscripts_users = Subscript.objects.filter(course=instance)
+        user_emails = [user.owner.email for user in subscripts_users]
+        updating_course_materials.delay(user_emails)
+
+        instance.save()
+        return instance
 
 
 class PaymentsSerializer(serializers.ModelSerializer):

@@ -131,6 +131,5 @@ class PayCreateAPIView(generics.CreateAPIView):
         )
         return Response({"date": session.url})
 
-
 # class PayRetrieveAPIView(generics.RetrieveAPIView):
 #     pass
